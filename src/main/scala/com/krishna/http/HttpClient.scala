@@ -3,7 +3,7 @@ package com.krishna.http
 import io.circe.Decoder
 import org.http4s.client.Client
 import zio.logging.{ Logger, Logging }
-import zio.{ Has, RIO, Task, URLayer, ZIO, ZLayer }
+import zio.{ Has, RIO, Task, URLayer, ZLayer }
 
 object HttpClient {
 

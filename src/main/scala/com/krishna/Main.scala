@@ -2,6 +2,7 @@ package com.krishna
 
 import com.krishna.http.HttpClient
 import com.krishna.client.WordnikApi
+import com.krishna.domain.WordOfTheDayResponse
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
 import zio._
@@ -24,7 +25,7 @@ object Main extends App {
     } yield ()
 
     program.foldM(
-      e => putStrLn(s"Execution failed: ${e.printStackTrace()}") *> ZIO.succeed(1),
+      e => putStrLn(s"Execution failed: ${e.getMessage}") *> ZIO.succeed(1),
       _ => ZIO.succeed(0)
     )
   }
@@ -56,9 +57,20 @@ object Main extends App {
 
     val program = for {
       wordOfDay <- WordnikApi.getWOD
-      _ <- putStrLn("Word of the day: "+ wordOfDay.toString)
-      pronunciation <- WordnikApi.getWordPronunciation(wordOfDay.word)
-      _ <- putStrLn("Pronunciation of the word of the day: " + pronunciation.toString)
+
+      isWoDDefined: Boolean = wordOfDay.isDefined
+
+      pronunciation <- if (isWoDDefined) {
+        WordnikApi.getWordPronunciation(wordOfDay.get.word)
+      } else ZIO.succeed(Seq.empty)
+
+      audio <- if (isWoDDefined) {
+        WordnikApi.getWordAudio(wordOfDay.get.word)
+      } else ZIO.succeed(None)
+
+      // Have to return this class in Inspirational-quote-api project
+      result = WordOfTheDayResponse(wordOfDay, pronunciation, audio)
+      _ <- putStrLn("Result case class: " + result.toString)
     } yield ()
 
     /*

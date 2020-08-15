@@ -8,7 +8,8 @@ object Dependencies {
     val zioLogging      = "0.2.7"
     val http4s          = "0.21.3"
     val circe           = "0.13.0"
-    val logback        = "1.2.3"
+    val logback         = "1.2.3"
+    val typesafeConfig  = "1.4.0"
   }
 
   object Libraries {
@@ -29,9 +30,9 @@ object Dependencies {
     val http4sCirce = http4s("http4s-circe")
 
     val circeCore = circe("circe-core")
-    val circeGeneric = circe("circe-generic")
     val circeParser = circe("circe-parser")
 
     val logback = "ch.qos.logback" % "logback-classic" % Versions.logback
+    val typesafeConfig = "com.typesafe" % "config" % Versions.typesafeConfig
   }
 }

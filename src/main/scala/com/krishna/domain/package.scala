@@ -76,4 +76,30 @@ package object domain {
       WordPronunciation(raw, rawType)
     }
   }
+
+  /*
+    Class for the audio of the word
+   */
+  case class WordAudio (
+    audioType: String,
+    fileUrl: String
+  )
+
+  object WordAudio {
+    implicit val decodeWordAudio: Decoder[WordAudio] = (c: HCursor) => for {
+      audioType <- c.downField("audioType").as[String]
+      fileUrl <- c.downField("fileUrl").as[String]
+    } yield {
+      WordAudio(audioType, fileUrl)
+    }
+  }
+
+  /*
+    Final return Class for the word of the day
+   */
+  final case class WordOfTheDayResponse (
+    wordOfTheDay: Option[WordOfTheDay],
+    wordPronunciation: Seq[WordPronunciation],
+    wordAudio: Option[WordAudio]
+  )
 }

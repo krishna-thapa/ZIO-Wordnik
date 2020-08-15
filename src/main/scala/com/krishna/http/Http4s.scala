@@ -5,7 +5,7 @@ import org.http4s.Uri
 import org.http4s.circe.CirceEntityCodec.circeEntityDecoder
 import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
-import zio.{ IO, Task, ZIO }
+import zio.{ Task, ZIO }
 import zio.interop.catz._
 import zio.logging.Logger
 
@@ -23,12 +23,11 @@ private[http] final case class Http4s(logger: Logger[String], client: Client[Tas
       client
         .expect[T](resourceUri.toString())
         .foldM(
-          e => logger.error(s"Request failed: bad request: ${e.getMessage}") *> ZIO.fail(e),
+          e => logger.error(s"Request failed with: ${e.getMessage}") *> ZIO.fail(e),
           ZIO.succeed(_)
         )
   }
 }
-
 
 /*
 Note:

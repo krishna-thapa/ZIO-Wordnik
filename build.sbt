@@ -24,9 +24,9 @@ lazy val root = (project in file("."))
       http4sCirce,
 
       circeCore,
-      //circeGeneric,
-      circeParser
+      circeParser,
 
+      typesafeConfig
     ),
     testFrameworks := Seq(new TestFramework("zio.test.sbt.ZTestFramework"))
   )
